@@ -3,6 +3,7 @@ public class Main{
         CurrencyConverter converter = new CurrencyConverter();
 
         converter.convertToUSD(37d);
+        converter.convertToUSD(-37d); // check exception handling
     }
 
 }
