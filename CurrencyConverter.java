@@ -5,7 +5,7 @@ public class CurrencyConverter {
             new EUR(),
             new GBP(),
             new USD(),
-            new String() // check exception handling
+            new Object() // check exception handling
     );
 
     public void convertToUSD(Double amount) {
@@ -14,37 +14,57 @@ public class CurrencyConverter {
                 convertCurrency(currency, amount);
             } catch (ClassNotFoundException e) {
                 System.out.println("Currency: " + currency.getClass().getSimpleName() + ", Error message: " + e.getMessage());
-            } catch (IllegalArgumentException e) {
-                System.out.println("Amount: " + amount + ", Error message: " + e.getMessage());
-                return;
+            } catch (NullPointerException e) {
+                System.out.println("Null pointer");
             }
         }
     }
 
     private void convert(EUR eur, Double amount) {
-        double usd = -1;
-        usd = EUR.convertToUSD(amount);
-        if (usd > 0) System.out.printf("%.2f EUR = %.2f USD\n", amount, usd);
+        double usd = 0;
+        try {
+            usd = EUR.convertToUSD(amount);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Amount: " + amount + ", Error message: " + e.getMessage());
+            return;
+        }
+        if (usd > 0) {
+            System.out.printf("%.2f EUR = %.2f USD\n", amount, usd);
+        }
     }
 
     private void convert(GBP gbp, Double amount) {
-        double usd = -1;
-        usd = GBP.convertToUSD(amount);
-        if (usd > 0) System.out.printf("%.2f GBP = %.2f USD\n", amount, usd);
+        double usd = 0;
+        try {
+            usd = GBP.convertToUSD(amount);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Amount: " + amount + ", Error message: " + e.getMessage());
+            return;
+        }
+        if (usd > 0) {
+            System.out.printf("%.2f GBP = %.2f USD\n", amount, usd);
+        }
     }
 
     private void convert(USD eur, Double amount) {
-        double usd = -1;
-        usd = USD.convertToUSD(amount);
-        if (usd > 0) System.out.printf("%.2f USD = %.2f USD\n", amount, usd);
+        double usd = 0;
+        try {
+            usd = EUR.convertToUSD(amount);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Amount: " + amount + ", Error message: " + e.getMessage());
+            return;
+        }
+        if (usd > 0) {
+            System.out.printf("%.2f USD = %.2f USD\n", amount, usd);
+        }
     }
 
-    private void convertCurrency(Object obj, double amount) throws ClassNotFoundException {
+    private void convertCurrency(Object obj, double amount) throws ClassNotFoundException, NullPointerException {
         switch (obj) {
             case EUR eur -> convert(eur, amount);
             case GBP gbp -> convert(gbp, amount);
             case USD usd -> convert(usd, amount);
-            case null -> System.out.println("Null object");
+            case null -> throw new NullPointerException();
             default -> throw new ClassNotFoundException("Unknown Currency");
         }
     }
